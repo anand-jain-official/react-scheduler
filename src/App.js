@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { ResizableBox } from 'react-resizable';
 
 const currentMonth = new Date();
 const nextMonth = new Date(new Date().setMonth(currentMonth.getMonth() + 1));
@@ -11,7 +12,20 @@ const scheduleTime = new Date(currentMonth.getFullYear(), currentMonth.getMonth(
 
 const doctors = [
   { name: "Dr. Khatre" },
-  { name: "Dr.Manasi" },
+  { name: "Dr.Manasi", 
+    appointments: [
+      {
+        name: "Anand Jain",
+        startTime: "2020-06-01T01:45:00.000Z",
+        duration: 15
+      },
+      {
+        name: "Varun Wilson",
+        startTime: "2020-06-01T01:45:00.000Z",
+        duration: 15
+      }
+    ]
+  },
   { name: "Dr. Bhatra" },
   { name: "Dr. Sivakumar" },
   { name: "Dr. Akash" },
@@ -50,11 +64,13 @@ function App() {
         <div className="calender">
           <Calendar
             onChange={() => {}}
-            value={currentMonth}
+            value={null}
+            activeStartDate={currentMonth}
           />
           <Calendar
             onChange={() => {}}
-            value={nextMonth}
+            value={null}
+            activeStartDate={nextMonth}
           />
         </div>
         <div className="scheduler">
@@ -63,6 +79,7 @@ function App() {
             {
               [...Array(24 * 4)].map((row, i) => {
                 scheduleTime.setMinutes( scheduleTime.getMinutes() + (i ? 15 : 0) )
+                console.log(scheduleTime.toISOString())
                 return (
                   <div className="row">
                     { getHour(scheduleTime) } : { scheduleTime.getMinutes() || "00" }
@@ -76,7 +93,13 @@ function App() {
             doctors.map(doc => (
               <div className="column">
                 <div className="toprow"> { doc.name } </div>
-                {[...Array(24 * 4)].map(item => <div className="row innerCell"></div>)}
+                {[...Array(24 * 4)].map(item => <div className="row innerCell">
+                    { Math.random() > 0.95 ?
+                      <ResizableBox className={`box active`} width={200} height={60} minConstraints={[200, 60]} draggableOpts={{grid: [200, 60]}} axis="y">
+                        <span className="text">Drag to increase</span>
+                      </ResizableBox> : null
+                    }
+                </div>)}
               </div>
             ))
           }
