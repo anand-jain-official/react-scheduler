@@ -42,7 +42,9 @@ const doctors = [
   { name: "Dr. Dhanya" },
   { name: "Dr. Rajkumar" },
   { name: "Dr. Ansari" },
-]
+];
+
+const cellHeight = 60;
 
 function App() {
 
@@ -95,7 +97,7 @@ function App() {
                 <div className="toprow"> { doc.name } </div>
                 {[...Array(24 * 4)].map(item => <div className="row innerCell">
                     { Math.random() > 0.95 ?
-                      <ResizableBox className={`box active`} width={200} height={60} minConstraints={[200, 60]} draggableOpts={{grid: [200, 60]}} axis="y">
+                      <ResizableBox className={`box active`} width={200} height={cellHeight * (Math.floor(Math.random() * 3) + 1)  } minConstraints={[200, 60]} draggableOpts={{grid: [200, 60]}} axis="y">
                         <span className="text">Drag to increase</span>
                       </ResizableBox> : null
                     }
